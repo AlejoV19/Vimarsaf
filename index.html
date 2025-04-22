@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vimarsaf</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding-top: 80px; /* Espacio para el menú fixed */
+            background-color: #fff5f5;
+            color: #4a4a4a;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Estilos del botón de menú */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: #d4a5a5;
+        }
+
+        /* Estilos del botón de cierre */
+        .close-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            color: #d4a5a5;
+        }
+
+        /* Hacer el contenedor principal responsive */
+        .num {
+            width: 100%;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(212, 165, 165, 0.1);
+            z-index: 1000;
+        }
+
+        .num h1 {
+            color: #d4a5a5;
+            text-align: center;
+            font-size: 2.5em;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .num h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background-color: #d4a5a5;
+        }
+
+        /* Hacer el menú responsive */
+        .num ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+            list-style: none;
+        }
+
+        .num ul li {
+            color: #4a4a4a;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .num ul li:hover {
+            color: #d4a5a5;
+        }
+
+        /* Hacer la portada responsive */
+        .portada {
+            width: 100%;
+            padding: 0;
+            position: relative;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+
+        .circulo {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circulo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .contenido {
+            text-align: center;
+            padding: 20px;
+            color: #4a4a4a;
+            max-width: 600px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .contenido p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .redes {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            z-index: 2;
+        }
+
+        .redes img {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .redes img:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        /* Hacer el grid de productos responsive */
+        .contenedor2 {
+            width: 100%;
+            padding: 40px 20px;
+            background-color: #fff5f5;
+        }
+
+        .contenedor2 .caja {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .caja > div {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(212, 165, 165, 0.1);
+            background-color: #fff;
+            transition: transform 0.3s ease;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .caja img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 15px;
+        }
+
+        .caja hr {
+            width: 80%;
+            border: none;
+            height: 1px;
+            background-color: rgba(212, 165, 165, 0.2);
+            margin: 15px auto;
+        }
+
+        .caja p {
+            margin: 8px 0;
+            color: #4a4a4a;
+        }
+
+        .caja input[type="button"] {
+            padding: 12px 25px;
+            margin-top: 15px;
+            cursor: pointer;
+            background-color: #d4a5a5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+            font-size: 1em;
+        }
+
+        .caja input[type="button"]:hover {
+            background-color: #c08f8f;
+        }
+
+        /* Hacer el mapa responsive */
+        .map-responsive {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .map-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Media queries para diferentes tamaños de pantalla */
+        @media screen and (max-width: 768px) {
+            .portada {
+                height: auto;
+                min-height: 50vh;
+                margin-top: 0;
+            }
+
+            .circulo {
+                height: auto;
+            }
+
+            .circulo img {
+                height: auto;
+                max-height: 50vh;
+            }
+
+            .contenido {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin: 20px;
+                background-color: #fff;
+                width: 90%;
+            }
+
+            .contenido p {
+                font-size: 1em;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .num ul.active ~ .close-btn {
+                display: block;
+            }
+
+            .num ul {
+                display: none;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.98);
+                padding: 20px;
+                z-index: 1000;
+                margin: 0;
+            }
+
+            .num ul.active {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .num ul li {
+                margin: 15px 0;
+                font-size: 1.2em;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .contenedor2 {
+                padding: 20px 10px;
+            }
+
+            .contenedor2 .caja {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 10px;
+            }
+
+            .caja > div {
+                padding: 15px;
+            }
+
+            .redes {
+                position: relative;
+                bottom: auto;
+                padding: 20px;
+                background-color: #fff;
+                margin-top: 20px;
+            }
+
+            .redes img {
+                width: 35px;
+                height: 35px;
+                background-color: transparent;
+            }
+
+            .num h1 {
+                font-size: 1.5em;
+                margin: 5px 0;
+            }
+
+            .num ul {
+                gap: 10px;
+                padding: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .portada {
+                min-height: 40vh;
+            }
+
+            .circulo img {
+                max-height: 40vh;
+            }
+
+            .contenido {
+                padding: 15px;
+            }
+
+            .num h1 {
+                font-size: 1.5em;
+            }
+        }
+
+        /* Estilos del modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(212, 165, 165, 0.2);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #d4a5a5;
+            transition: transform 0.3s ease;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.2);
+            color: #c08f8f;
+        }
+
+        .modal-content img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            display: block;
+            margin: 0 auto 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #d4a5a5;
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .modal-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background-color: #d4a5a5;
+        }
+
+        .modal-content p {
+            margin: 10px 0;
+            text-align: center;
+            color: #4a4a4a;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .modal-content p:last-child {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(212, 165, 165, 0.2);
+            font-style: italic;
+        }
+
+        @media screen and (max-width: 768px) {
+            .modal-content {
+                padding: 30px 20px;
+                margin: 15px;
+            }
+
+            .modal-content h2 {
+                font-size: 1.5em;
+            }
+
+            .modal-content p {
+                font-size: 1em;
+            }
+
+            .modal-content img {
+                max-width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .modal-content {
+                padding: 25px 15px;
+                margin: 10px;
+            }
+
+            .modal-content h2 {
+                font-size: 1.3em;
+            }
+
+            .modal-content p {
+                font-size: 0.9em;
+            }
+        }
+
+        /* Estilos del footer */
+        footer {
+            background-color: #fff;
+            padding: 40px 20px;
+            margin-top: 50px;
+            box-shadow: 0 -2px 10px rgba(212, 165, 165, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            color: #d4a5a5;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #4a4a4a;
+            text-decoration: none;
+            margin: 10px 0;
+            display: block;
+        }
+
+        .footer-section a:hover {
+            color: #d4a5a5;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .footer-social img {
+            width: 25px;
+            height: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-social img:hover {
+            transform: scale(1.1);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(212, 165, 165, 0.2);
+            color: #4a4a4a;
+        }
+    </style>
+</head>
+<BODY>
+    <div class="num">
+        <h1>Vimarsaf</h1>
+        <button class="menu-btn">☰</button>
+        <ul>
+            <li>Inicio</li>
+            <li>Sobre nosotros</li>
+            <li>Productos</li>
+            <li>Ubicaciones</li>
+            <li>Contacto</li>
+        </ul>
+        <button class="close-btn">×</button>
+    </div>
+    
+    <div class="portada">
+        <div class="redes">
+            <img src="imagenes/facebook (1).png" alt="Facebook">
+            <img src="imagenes/instagram.png" alt="Instagram">
+            <img src="imagenes/gorjeo.png" alt="Twitter">
+            <img src="imagenes/tik-tok.png" alt="TikTok">
+        </div>
+        <div class="contenido">
+            <p>
+                Producto elaborado 100% con manos hondureñas de excelente calidad para tu estilo y comodidad
+            </p> 
+        </div>
+        
+        <div class="circulo">
+            <img src="imagenes/2.jpg" alt="Círculo">
+        </div>
+    </div>
+
+    <div class="contenedor2">
+        <div class="caja">
+            <div class="caja1">
+                <img src="imagenes/IMAGEN1.webp" alt="Zapato 1">
+                <hr>
+                <p>Zapato con telar lenca </p>
+                <p>Precio: L. 300</p>
+                <p>Variedad en tallas</p>
+                <input type="button" value="Ver más detalles" data-product="1">
+            </div>
+            <div class="caja2">
+                <img src="imagenes/IMAGEN2.webp" alt="Zapato 2">
+                <hr>
+                <p>Zapato con telar lenca </p>
+                <p>Precio: L. 350</p>
+                <p>Variedad en tallas</p>
+                <input type="button" value="Ver más detalles" data-product="2">
+            </div>
+            <div class="caja3">
+                <img src="imagenes/IMAGEN3.webp" alt="Zapato 3">
+                <hr>
+                <p>Zapato con telar lenca </p>
+                <p>Precio: L. 500</p>
+                <p>Variedad en tallas</p>
+                <input type="button" value="Ver más detalles" data-product="3">
+            </div>
+            <div class="caja4">
+                <img src="imagenes/IMAGEN4.webp" alt="Zapato 4">
+                <hr>
+                <p>Zapato con telar lenca </p>
+                <p>Precio: L. 350</p>
+                <p>Variedad en tallas</p>
+                <input type="button" value="Ver más detalles" data-product="4">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p>Teléfono: +504 9474-3471</p>
+                <p>Email: info@vimarsaf.com</p>
+                <p>Dirección: Res. La Vega, Tegucigalpa</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Horario</h3>
+                <p>Lunes a Viernes: 9:00 AM - 6:00 PM</p>
+                <p>Sábado: 9:00 AM - 2:00 PM</p>
+                <p>Domingo: Cerrado</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="footer-social">
+                    <a href="#"><img src="imagenes/facebook (1).png" alt="Facebook"></a>
+                    <a href="#"><img src="imagenes/instagram.png" alt="Instagram"></a>
+                    <a href="#"><img src="imagenes/gorjeo.png" alt="Twitter"></a>
+                    <a href="#"><img src="imagenes/tik-tok.png" alt="TikTok"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-responsive">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1627.2319950525712!2d-87.19815934376453!3d14.063488896790018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f6fbd3e8c1c431b%3A0x66d73478a2f49947!2sRes.%20La%20Vega%2C%20Tegucigalpa!5e0!3m2!1ses!2shn!4v1682441485381!5m2!1ses!2shn" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Vimarsaf. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modal para detalles del producto -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img src="" alt="Producto" id="modalImage">
+            <h2 id="modalTitle"></h2>
+            <p id="modalDescription"></p>
+            <p id="modalPrice"></p>
+            <p id="modalSizes"></p>
+            <p id="modalDetails"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.querySelector('.menu-btn');
+            const closeBtn = document.querySelector('.close-btn');
+            const menuList = document.querySelector('.num ul');
+            const modal = document.getElementById('productModal');
+            const closeModal = document.querySelector('.close-modal');
+            const infoButtons = document.querySelectorAll('input[type="button"]');
+
+            // Funcionalidad del menú
+            menuBtn.addEventListener('click', function() {
+                menuList.classList.add('active');
+            });
+
+            closeBtn.addEventListener('click', function() {
+                menuList.classList.remove('active');
+            });
+
+            // Funcionalidad del modal
+            infoButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product');
+                    const product = products[productId];
+                    
+                    document.getElementById('modalImage').src = product.image;
+                    document.getElementById('modalTitle').textContent = product.title;
+                    document.getElementById('modalDescription').textContent = product.description;
+                    document.getElementById('modalPrice').textContent = product.price;
+                    document.getElementById('modalSizes').textContent = product.sizes;
+                    document.getElementById('modalDetails').textContent = product.details;
+                    
+                    modal.classList.add('active');
+                });
+            });
+
+            closeModal.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Datos de los productos
+        const products = {
+            1: {
+                title: "Zapato con telar lenca",
+                description: "Zapato artesanal elaborado con telar lenca tradicional",
+                price: "L. 300",
+                sizes: "Tallas disponibles: 35-40",
+                details: "Material: Cuero y telar lenca\nHecho a mano\nSuela antideslizante\nComodidad garantizada",
+                image: "imagenes/IMAGEN1.webp"
+            },
+            2: {
+                title: "Zapato con telar lenca",
+                description: "Zapato artesanal con diseño exclusivo de telar lenca",
+                price: "L. 350",
+                sizes: "Tallas disponibles: 35-40",
+                details: "Material: Cuero y telar lenca\nHecho a mano\nSuela antideslizante\nDiseño único",
+                image: "imagenes/IMAGEN2.webp"
+            },
+            3: {
+                title: "Zapato con telar lenca",
+                description: "Zapato premium con detalles en telar lenca",
+                price: "L. 500",
+                sizes: "Tallas disponibles: 35-40",
+                details: "Material: Cuero premium y telar lenca\nHecho a mano\nSuela antideslizante\nDiseño exclusivo",
+                image: "imagenes/IMAGEN3.webp"
+            },
+            4: {
+                title: "Zapato con telar lenca",
+                description: "Zapato elegante con acabados en telar lenca",
+                price: "L. 350",
+                sizes: "Tallas disponibles: 35-40",
+                details: "Material: Cuero y telar lenca\nHecho a mano\nSuela antideslizante\nEstilo versátil",
+                image: "imagenes/IMAGEN4.webp"
+            }
+        };
+    </script>
+</BODY>
+</html>
